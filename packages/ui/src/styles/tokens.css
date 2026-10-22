@@ -1,0 +1,471 @@
+/*
+ * @open-hrms/ui design tokens. Import AFTER "tailwindcss" and "tw-animate-css":
+ *
+ *   @import "tailwindcss";
+ *   @import "tw-animate-css";
+ *   @import "@open-hrms/ui/styles.css";
+ *   @source "<path to>/packages/ui/src";
+ */
+@import "./shadcn-variants.css";
+
+@custom-variant dark (&:is(.dark *));
+
+/* ═══════════════════════════════════════════════════════════════════════════
+   Shared design tokens, Apple-calibrated.
+
+   Built to Apple's Human Interface Guidelines: 44px minimum touch targets,
+   the iOS type ramp, continuous-looking corner radii, system-grey neutrals,
+   translucent materials, and Apple's standard spring easing, with a teal
+   accent (#0f6e5e) that a workspace can override at runtime (brand colour).
+
+   Everything downstream (the primitives in @open-hrms/ui, every page in both
+   apps) pulls from these tokens, change a value here and both apps follow.
+   The operator console imports this file and then re-declares the palette
+   on :root for its permanently dark "control plane" look.
+   ═══════════════════════════════════════════════════════════════════════════ */
+
+@theme inline {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  /* Self-hosted families (fontsource, imported by each app's root layout), so a
+     build never has to reach a font CDN. Declared on :root below. */
+  --font-sans: var(--font-sans);
+  --font-mono: var(--font-mono);
+  --font-heading: var(--font-sans);
+  --color-sidebar-ring: var(--sidebar-ring);
+  --color-sidebar-border: var(--sidebar-border);
+  --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
+  --color-sidebar-accent: var(--sidebar-accent);
+  --color-sidebar-primary-foreground: var(--sidebar-primary-foreground);
+  --color-sidebar-primary: var(--sidebar-primary);
+  --color-sidebar-foreground: var(--sidebar-foreground);
+  --color-sidebar: var(--sidebar);
+  --color-chart-5: var(--chart-5);
+  --color-chart-4: var(--chart-4);
+  --color-chart-3: var(--chart-3);
+  --color-chart-2: var(--chart-2);
+  --color-chart-1: var(--chart-1);
+  --color-ring: var(--ring);
+  --color-input: var(--input);
+  --color-border: var(--border);
+  --color-destructive: var(--destructive);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-accent: var(--accent);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-muted: var(--muted);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-secondary: var(--secondary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-primary: var(--primary);
+  --color-popover-foreground: var(--popover-foreground);
+  --color-popover: var(--popover);
+  --color-card-foreground: var(--card-foreground);
+  --color-card: var(--card);
+
+  /* ── Corner radii, iOS-scale, generous. ─────────────────────────────── */
+  --radius-xs: 6px;
+  --radius-sm: 8px;
+  --radius-md: 10px;
+  --radius-lg: var(--radius); /* 12px, the default control radius */
+  --radius-xl: 16px;
+  --radius-2xl: 20px;
+  --radius-3xl: 26px;
+  --radius-4xl: 34px;
+
+  /* ── Type ramp, Apple's iOS text styles, mapped to Tailwind names. ───
+     Every step is at or ABOVE the Tailwind default it replaces. That
+     constraint is the point: `text-sm` and `text-base` alone appear ~200
+     times across these pages, so setting them below Tailwind's 14/16 would
+     have quietly shrunk most of the product while claiming to enlarge it.
+     The small end gets the biggest lift, since that is where the app read
+     as cramped.
+
+     Default -> ours:  xs 12->13 · sm 14->15 · base 16->16 · lg 18->19
+                       xl 20->22 · 2xl 24->26 · 3xl 30->32 · 4xl 36->40
+
+     There is also a floor: nothing is below 12px, and every form control
+     sits at >=16px so mobile Safari never zooms on focus. */
+  --text-2xs: 12px;
+  --text-2xs--line-height: 16px;
+  --text-xs: 13px;          /* Apple Footnote, captions, table metadata */
+  --text-xs--line-height: 18px;
+  --text-sm: 15px;          /* Apple Subhead, secondary body copy */
+  --text-sm--line-height: 21px;
+  --text-base: 16px;        /* Apple Callout */
+  --text-base--line-height: 22px;
+  --text-md: 17px;          /* Apple Body */
+  --text-md--line-height: 24px;
+  --text-lg: 19px;
+  --text-lg--line-height: 26px;
+  --text-xl: 22px;          /* Apple Title 2 */
+  --text-xl--line-height: 28px;
+  --text-2xl: 26px;
+  --text-2xl--line-height: 32px;
+  --text-3xl: 32px;
+  --text-3xl--line-height: 38px;
+  --text-4xl: 40px;
+  --text-4xl--line-height: 46px;
+  --text-5xl: 48px;
+  --text-5xl--line-height: 54px;
+  --text-6xl: 60px;
+  --text-6xl--line-height: 64px;
+  --text-7xl: 72px;
+  --text-7xl--line-height: 76px;
+
+  /* ── Elevation, soft, layered, never harsh. ─────────────────────────── */
+  --shadow-xs: var(--elev-1);
+  --shadow-sm: var(--elev-1);
+  --shadow-md: var(--elev-2);
+  --shadow-lg: var(--elev-3);
+  --shadow-xl: var(--elev-4);
+  --shadow-2xl: var(--elev-5);
+
+  /* ── Motion, Apple's standard spring-ish curve. ─────────────────────── */
+  --ease-apple: cubic-bezier(0.32, 0.72, 0, 1);
+  --ease-apple-out: cubic-bezier(0.16, 1, 0.3, 1);
+  --ease-apple-in-out: cubic-bezier(0.65, 0, 0.35, 1);
+}
+
+:root {
+  color-scheme: light;
+
+  /* Families. Apple's own stack is placed in front of these on <html>. */
+  --font-sans: "Inter Variable", "Inter", ui-sans-serif, system-ui, sans-serif;
+  --font-mono: "JetBrains Mono Variable", ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+
+  /* Default control radius. Everything else derives from this. */
+  --radius: 12px;
+
+  /* ── Control geometry ────────────────────────────────────────────────
+     44px is Apple's minimum comfortable touch target and the size the
+     product's primary controls use. `compact` is for dense table rows and
+     toolbars only, never for a primary action or a form field.          */
+  --control-h: 44px;
+  --control-h-compact: 36px;
+  --control-h-sm: 32px;
+  --control-h-lg: 52px;
+  --control-px: 16px;
+  --icon-sm: 18px;
+  --icon: 20px;
+  --icon-lg: 24px;
+
+  /* ── Neutrals, Apple system greys. ─────────────────────────────────── */
+  --background: #f2f2f7; /* systemGroupedBackground */
+  --foreground: #1d1d1f; /* label */
+  --card: #ffffff;
+  --card-foreground: #1d1d1f;
+  --popover: #ffffff;
+  --popover-foreground: #1d1d1f;
+  --secondary: #f2f2f7;
+  --secondary-foreground: #1d1d1f;
+  --muted: #f2f2f7;
+  --muted-foreground: #6e6e73; /* secondaryLabel */
+  --border: #d8d8dd; /* opaqueSeparator */
+  --input: #d8d8dd;
+
+  /* ── Brand: the default teal, overridable per workspace. ──────────── */
+  --primary: #0f6e5e;
+  --primary-foreground: #ffffff;
+  --accent: #e7f2ef;
+  --accent-foreground: #0a5447;
+  --ring: #0f6e5e;
+
+  /* ── Apple system colours (semantic states). ────────────────────────── */
+  --destructive: #d70015; /* systemRed */
+  --chart-1: #0f6e5e;
+  --chart-2: #007aff; /* systemBlue */
+  --chart-3: #ff9500; /* systemOrange */
+  --chart-4: #af52de; /* systemPurple */
+  --chart-5: #8e8e93; /* systemGrey */
+
+  --sidebar: #ffffff;
+  --sidebar-foreground: #1d1d1f;
+  --sidebar-primary: #0f6e5e;
+  --sidebar-primary-foreground: #ffffff;
+  --sidebar-accent: #e7f2ef;
+  --sidebar-accent-foreground: #0a5447;
+  --sidebar-border: #d8d8dd;
+  --sidebar-ring: #0f6e5e;
+
+  /* ── Semantic tokens used across pages for tags/badges/status. ──────── */
+  --ink-2: #3c3c43;
+  --muted-2: #6e6e73;
+  --faint: #aeaeb2; /* tertiaryLabel */
+  --line: #d8d8dd;
+  --line-2: #e9e9ed;
+  --hairline: rgba(60, 60, 67, 0.29); /* Apple separator */
+  --accent-50: #e7f2ef;
+  --accent-100: #cfe6e0;
+  --accent-700: #0a5447;
+  --coral: #ff3b30;
+  --ok: #0f6e5e;
+  --ok-bg: #e7f2ef;
+  --warn: #b25000;
+  --warn-bg: #fff4e5;
+  --bad: #d70015;
+  --bad-bg: #ffebe9;
+  --info: #0071e3;
+  --info-bg: #e8f2fe;
+  --grey-bg: #f2f2f7;
+  --grey-fg: #6e6e73;
+
+  /* ── Elevation ramp. ────────────────────────────────────────────────── */
+  --elev-1: 0 1px 2px rgba(0, 0, 0, 0.04), 0 1px 1px rgba(0, 0, 0, 0.03);
+  --elev-2: 0 2px 6px rgba(0, 0, 0, 0.05), 0 1px 2px rgba(0, 0, 0, 0.04);
+  --elev-3: 0 6px 18px rgba(0, 0, 0, 0.07), 0 2px 5px rgba(0, 0, 0, 0.04);
+  --elev-4: 0 14px 38px rgba(0, 0, 0, 0.10), 0 4px 10px rgba(0, 0, 0, 0.05);
+  --elev-5: 0 28px 70px rgba(0, 0, 0, 0.14), 0 8px 20px rgba(0, 0, 0, 0.06);
+
+  /* Translucent "material" backdrops (iOS vibrancy). */
+  --material-thick: rgba(255, 255, 255, 0.86);
+  --material-regular: rgba(255, 255, 255, 0.72);
+  --material-thin: rgba(255, 255, 255, 0.55);
+  --material-blur: saturate(180%) blur(20px);
+}
+
+.dark {
+  color-scheme: dark;
+
+  --background: #000000;
+  --foreground: #f5f5f7;
+  --card: #1c1c1e; /* secondarySystemBackground */
+  --card-foreground: #f5f5f7;
+  --popover: #2c2c2e;
+  --popover-foreground: #f5f5f7;
+  --secondary: #2c2c2e;
+  --secondary-foreground: #f5f5f7;
+  --muted: #1c1c1e;
+  --muted-foreground: #98989f;
+  --border: #38383a;
+  --input: #48484a;
+
+  --primary: #2fb89c;
+  --primary-foreground: #00201a;
+  --accent: #16302b;
+  --accent-foreground: #6fd8bf;
+  --ring: #2fb89c;
+
+  --destructive: #ff453a;
+  --chart-1: #2fb89c;
+  --chart-2: #0a84ff;
+  --chart-3: #ff9f0a;
+  --chart-4: #bf5af2;
+  --chart-5: #98989f;
+
+  --sidebar: #1c1c1e;
+  --sidebar-foreground: #f5f5f7;
+  --sidebar-primary: #2fb89c;
+  --sidebar-primary-foreground: #00201a;
+  --sidebar-accent: #16302b;
+  --sidebar-accent-foreground: #6fd8bf;
+  --sidebar-border: #38383a;
+  --sidebar-ring: #2fb89c;
+
+  --ink-2: #d1d1d6;
+  --muted-2: #98989f;
+  --faint: #6e6e73;
+  --line: #38383a;
+  --line-2: #2c2c2e;
+  --hairline: rgba(84, 84, 88, 0.65);
+  --accent-50: #16302b;
+  --accent-100: #1d4038;
+  --accent-700: #6fd8bf;
+  --coral: #ff453a;
+  --ok: #30d158;
+  --ok-bg: #10301a;
+  --warn: #ff9f0a;
+  --warn-bg: #33260a;
+  --bad: #ff453a;
+  --bad-bg: #3a1512;
+  --info: #0a84ff;
+  --info-bg: #0a2440;
+  --grey-bg: #2c2c2e;
+  --grey-fg: #98989f;
+
+  --elev-1: 0 1px 2px rgba(0, 0, 0, 0.5);
+  --elev-2: 0 2px 8px rgba(0, 0, 0, 0.55);
+  --elev-3: 0 8px 24px rgba(0, 0, 0, 0.6);
+  --elev-4: 0 16px 44px rgba(0, 0, 0, 0.66);
+  --elev-5: 0 30px 80px rgba(0, 0, 0, 0.72);
+
+  --material-thick: rgba(28, 28, 30, 0.88);
+  --material-regular: rgba(28, 28, 30, 0.74);
+  --material-thin: rgba(28, 28, 30, 0.58);
+}
+
+@layer base {
+  * {
+    @apply border-border outline-ring/50;
+  }
+
+  html {
+    @apply font-sans;
+    /* Apple's own stack first, so macOS/iOS render in real SF Pro and the
+       product feels native there; Inter carries everyone else. */
+    font-family:
+      -apple-system, BlinkMacSystemFont, "SF Pro Text", "SF Pro Display",
+      var(--font-sans), "Segoe UI Variable", "Segoe UI", system-ui, sans-serif;
+    -webkit-text-size-adjust: 100%;
+    text-rendering: optimizeLegibility;
+  }
+
+  /* Safety net for horizontal overflow. Without this, one too-wide element widens the
+     whole document and the sticky topbar scrolls sideways with it, which is how a local
+     layout bug turned into a whole-page defect. `clip` rather than `hidden` because
+     `hidden` on html/body would break `position: sticky` in the header.
+     This is a net, not a licence: overflow still gets fixed at the source. */
+  html,
+  body {
+    overflow-x: clip;
+  }
+
+  body {
+    @apply bg-background text-foreground;
+    font-size: 15px;
+    line-height: 1.47059; /* Apple's body leading */
+    letter-spacing: -0.011em; /* SF-style optical tightening */
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    font-feature-settings: "cv11", "ss01";
+    -webkit-tap-highlight-color: transparent;
+  }
+
+  /* Apple tightens tracking as type gets larger. Mirror that ramp. */
+  h1 { letter-spacing: -0.024em; }
+  h2 { letter-spacing: -0.021em; }
+  h3 { letter-spacing: -0.018em; }
+  h4, h5, h6 { letter-spacing: -0.014em; }
+
+  /* Form controls never below 16px, stops mobile Safari zooming on focus. */
+  input,
+  textarea,
+  select {
+    font-size: max(16px, 1em);
+  }
+
+  /* A visible, on-brand focus ring only for keyboard users. */
+  :focus-visible {
+    outline: none;
+  }
+
+  /* Softer, Apple-like scrollbars. */
+  * {
+    scrollbar-width: thin;
+    scrollbar-color: var(--faint) transparent;
+  }
+  *::-webkit-scrollbar {
+    width: 10px;
+    height: 10px;
+  }
+  *::-webkit-scrollbar-thumb {
+    background-color: color-mix(in srgb, var(--faint) 55%, transparent);
+    border: 3px solid transparent;
+    border-radius: 999px;
+    background-clip: content-box;
+  }
+  *::-webkit-scrollbar-thumb:hover {
+    background-color: color-mix(in srgb, var(--faint) 85%, transparent);
+  }
+  *::-webkit-scrollbar-corner {
+    background: transparent;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    *,
+    *::before,
+    *::after {
+      animation-duration: 0.01ms !important;
+      animation-iteration-count: 1 !important;
+      transition-duration: 0.01ms !important;
+      scroll-behavior: auto !important;
+    }
+  }
+}
+
+@layer utilities {
+  /* iOS translucent material, a blurred, saturated backdrop. */
+  .material {
+    background-color: var(--material-regular);
+    backdrop-filter: var(--material-blur);
+    -webkit-backdrop-filter: var(--material-blur);
+  }
+  .material-thick {
+    background-color: var(--material-thick);
+    backdrop-filter: var(--material-blur);
+    -webkit-backdrop-filter: var(--material-blur);
+  }
+  .material-thin {
+    background-color: var(--material-thin);
+    backdrop-filter: var(--material-blur);
+    -webkit-backdrop-filter: var(--material-blur);
+  }
+
+  /* Apple's true 1px hairline separator (not a full-strength border). */
+  .hairline {
+    border-color: var(--hairline);
+  }
+
+  /* Standard Apple easing, exposed as a utility. */
+  .ease-apple {
+    transition-timing-function: cubic-bezier(0.32, 0.72, 0, 1);
+  }
+
+  /* Press feedback: the subtle scale-down iOS uses on tap. */
+  .press {
+    transition:
+      transform 0.2s cubic-bezier(0.32, 0.72, 0, 1),
+      opacity 0.2s cubic-bezier(0.32, 0.72, 0, 1);
+  }
+  .press:active {
+    transform: scale(0.97);
+  }
+
+  /* Horizontal scroll affordance for tables.
+     Tables already scroll inside their container, but Card is overflow-hidden and macOS
+     and iOS use overlay scrollbars, so there was no cue at all that content continued
+     past the right edge. Measured on the live app at 390px: /onboarding hid 533px of 7
+     columns, /holidays 358px, /ai-tokens 219px. The data read as missing rather than
+     scrollable.
+
+     Pure CSS, no JS and no scroll listener: the two `local` gradients scroll with the
+     content and mask the shadows when there is nothing more in that direction, while the
+     two `scroll` radial shadows stay pinned to the edges. So each shadow appears only
+     when that side actually has more content. */
+  .scroll-shadow-x {
+    background-image:
+      linear-gradient(to right, var(--card) 30%, transparent),
+      linear-gradient(to left, var(--card) 30%, transparent),
+      radial-gradient(farthest-side at 0 50%, rgba(0, 0, 0, 0.14), transparent),
+      radial-gradient(farthest-side at 100% 50%, rgba(0, 0, 0, 0.14), transparent);
+    background-position: 0 0, 100% 0, 0 0, 100% 0;
+    background-repeat: no-repeat;
+    background-size: 40px 100%, 40px 100%, 14px 100%, 14px 100%;
+    background-attachment: local, local, scroll, scroll;
+    /* Deliberately no `scrollbar-gutter: stable`. Setting overflow-x:auto makes the
+       computed overflow-y `auto` too, so a stable gutter reserves the VERTICAL
+       scrollbar's 11px of width. The table container never scrolls vertically, so that
+       gutter bought nothing and hid 11 more pixels of every table (measured). */
+  }
+
+  /* Content column widths, so pages align to one grid. */
+  .container-app {
+    width: 100%;
+    margin-inline: auto;
+    max-width: 1180px;
+    padding-inline: 20px;
+  }
+  @media (min-width: 640px) {
+    .container-app { padding-inline: 28px; }
+  }
+
+  /* Narrower column for the public (signed-out) pages. */
+  .container-public {
+    width: 100%;
+    margin-inline: auto;
+    max-width: 1120px;
+    padding-inline: 22px;
+  }
+  @media (min-width: 640px) {
+    .container-public { padding-inline: 32px; }
+  }
+}

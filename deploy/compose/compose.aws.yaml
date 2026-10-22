@@ -1,0 +1,16 @@
+# ─────────────────────────────────────────────────────────────────────────────
+# Overlay: the local containers against REAL AWS resources (from envs/aws-dev, or
+# your own). Credentials come from your AWS profile; resource names from .env.aws.
+#   cp deploy/compose/.env.aws.example deploy/compose/.env.aws   # then edit
+#   make up-aws
+# ─────────────────────────────────────────────────────────────────────────────
+services:
+  api:
+    env_file: [.env.aws]
+    environment:
+      AWS_PROFILE: ${AWS_PROFILE:-default}
+      STORAGE: s3
+      KMS_MODE: aws
+      MAIL_MODE: ses
+    volumes:
+      - ${HOME}/.aws:/home/node/.aws:ro

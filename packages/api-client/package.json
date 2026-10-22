@@ -1,0 +1,26 @@
+{
+  "name": "@open-hrms/api-client",
+  "version": "0.1.0",
+  "private": true,
+  "description": "Typed axios client shared by the tenant app and the operator console: bearer tokens, session expiry, suspended workspaces, downloads and the impersonation hand-off.",
+  "type": "module",
+  "sideEffects": false,
+  "exports": {
+    ".": "./src/index.ts"
+  },
+  "scripts": {
+    "lint": "eslint src test",
+    "typecheck": "tsc --noEmit",
+    "test": "vitest run"
+  },
+  "dependencies": {
+    "@open-hrms/types": "workspace:*",
+    "axios": "^1.17.0"
+  },
+  "devDependencies": {
+    "eslint": "^9.39.1",
+    "jsdom": "^25.0.1",
+    "typescript": "^5.9.3",
+    "vitest": "^2.1.8"
+  }
+}

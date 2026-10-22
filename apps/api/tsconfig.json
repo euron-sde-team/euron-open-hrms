@@ -1,0 +1,15 @@
+{
+  "extends": "../../tsconfig.base.json",
+  "compilerOptions": {
+    "types": ["node"],
+    // Records are "hot columns + jsonb" documents read through one generic repository,
+    // so index access is pervasive and checked at the edges (validate.ts) instead.
+    "noUncheckedIndexedAccess": false,
+    // Every other strict check is on. Route handlers still take untyped req/res;
+    // typing them is tracked in docs/architecture/LLD.md ("Type coverage").
+    "noImplicitAny": false,
+    "allowJs": false
+  },
+  "include": ["src/**/*.ts", "test/**/*.ts"],
+  "exclude": ["test/legacy/**"]
+}

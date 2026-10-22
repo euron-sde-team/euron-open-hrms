@@ -1,0 +1,49 @@
+{
+  "name": "euron-open-hrms",
+  "version": "0.1.0",
+  "private": true,
+  "description": "Open-source multi-tenant HRMS: employees, attendance, leave, global payroll, onboarding, documents and an operator console. Express + Postgres + Next.js, Terraform for AWS, a local AWS emulator for development.",
+  "license": "MIT",
+  "packageManager": "pnpm@9.15.0",
+  "engines": {
+    "node": ">=22.0.0"
+  },
+  "scripts": {
+    "dev": "turbo run dev --parallel",
+    "build": "turbo run build",
+    "lint": "turbo run lint",
+    "typecheck": "turbo run typecheck",
+    "test": "turbo run test",
+    "test:integration": "vitest run --config vitest.integration.config.mts",
+    "e2e": "playwright test --config e2e/playwright.config.ts",
+    "format": "prettier --write .",
+    "format:check": "prettier --check .",
+    "db:migrate": "tsx db/migrate.ts",
+    "demo:seed": "pnpm --filter @open-hrms/api demo:seed",
+    "openapi": "tsx scripts/gen-openapi.ts"
+  },
+  "devDependencies": {
+    "@eslint/js": "^9.39.1",
+    "@playwright/test": "^1.49.1",
+    "@types/node": "^22.10.0",
+    "@types/pg": "^8.15.6",
+    "dotenv": "^17.2.3",
+    "eslint": "^9.39.1",
+    "pg": "^8.16.3",
+    "prettier": "^3.4.2",
+    "tsx": "^4.21.0",
+    "turbo": "^2.3.3",
+    "typescript": "^5.9.3",
+    "typescript-eslint": "^8.47.0",
+    "vitest": "^2.1.8"
+  },
+  "pnpm": {
+    "onlyBuiltDependencies": [
+      "esbuild"
+    ],
+    "overrides": {
+      "postcss@<8.5.23": "^8.5.29",
+      "sharp@<0.35.5": "^0.35.5"
+    }
+  }
+}

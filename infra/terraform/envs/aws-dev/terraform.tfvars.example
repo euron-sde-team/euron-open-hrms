@@ -1,0 +1,17 @@
+# Copy to terraform.tfvars (git-ignored) and replace every placeholder.
+region      = "us-east-1"
+name_prefix = "acme-hrms-dev" # bucket names derive from this: make it globally unique
+
+domain          = "hrms.example.com"      # app.hrms.example.com, api.hrms.example.com, console.hrms.example.com
+route53_zone_id = "<ROUTE53_HOSTED_ZONE_ID>" # automatic certificates + DNS; or set certificate_arn instead
+
+# image_tag is passed by `make aws-deploy` (the git commit); set it here to pin a release.
+# image_tag = "0.1.0"
+
+# alarm_email = "oncall@example.com"
+
+# Optional AI document extraction (off by default; read docs/guides/configuration.md first).
+# api_extra_environment = {
+#   AI_DOC_EXTRACTION = "true"
+#   AI_DOC_EXCLUDE    = "AADHAAR"
+# }

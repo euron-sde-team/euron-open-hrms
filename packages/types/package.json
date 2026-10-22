@@ -1,0 +1,20 @@
+{
+  "name": "@open-hrms/types",
+  "version": "0.1.0",
+  "private": true,
+  "description": "API contract types shared by the tenant app and the operator console.",
+  "type": "module",
+  "sideEffects": false,
+  "exports": {
+    ".": "./src/index.ts"
+  },
+  "scripts": {
+    "lint": "eslint src test",
+    "typecheck": "tsc --noEmit",
+    "test": "vitest run"
+  },
+  "devDependencies": {
+    "typescript": "^5.9.3",
+    "vitest": "^2.1.8"
+  }
+}

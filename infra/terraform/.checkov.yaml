@@ -1,0 +1,8 @@
+# Checkov policy for infra/terraform.
+#
+# No global skips. Open-source checkov carries no severities, so ANY finding fails CI;
+# every exception is an inline `#checkov:skip=<id>:<reason>` next to the resource it
+# concerns, so the reason is reviewed together with the code.
+framework: [terraform]
+compact: true
+quiet: true

@@ -1,0 +1,128 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1280" height="720" viewBox="0 0 1280 720" role="img" aria-labelledby="t d">
+  <title id="t">Euron Open HRMS architecture</title>
+  <desc id="d">Browsers reach the web app, operator console and API through CloudFront and one load balancer; the API owns PostgreSQL, S3, KMS, SES and Secrets Manager.</desc>
+  <style>
+    .t { font-family: Inter, -apple-system, Segoe UI, Helvetica, Arial, sans-serif; }
+    .m { font-family: JetBrains Mono, SFMono-Regular, Menlo, monospace; }
+    .h { font-size: 17px; font-weight: 650; fill: #e9f2f0; }
+    .s { font-size: 13px; fill: #93a7a3; }
+    .x { font-size: 12px; fill: #6f8581; }
+    .box { fill: #111c1a; stroke: #2a3c39; stroke-width: 1.2; }
+    .hot { fill: #10211e; stroke: #2dd4bf; stroke-opacity: 0.55; stroke-width: 1.4; }
+    .aws { fill: #141a24; stroke: #33405a; stroke-width: 1.2; }
+    .zone { fill: none; stroke: #2a3c39; stroke-dasharray: 5 6; stroke-width: 1.2; }
+    .arrow { stroke: #4b6662; stroke-width: 1.6; fill: none; marker-end: url(#a); }
+    .arrowhot { stroke: #2dd4bf; stroke-opacity: 0.8; stroke-width: 1.6; fill: none; marker-end: url(#ah); }
+  </style>
+  <defs>
+    <marker id="a" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0 0L10 5L0 10z" fill="#4b6662"/></marker>
+    <marker id="ah" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0 0L10 5L0 10z" fill="#2dd4bf"/></marker>
+    <pattern id="grid" width="32" height="32" patternUnits="userSpaceOnUse"><path d="M32 0H0V32" fill="none" stroke="#fff" stroke-opacity="0.03"/></pattern>
+  </defs>
+  <rect width="1280" height="720" rx="16" fill="#0a1110"/>
+  <rect width="1280" height="720" rx="16" fill="url(#grid)"/>
+
+  <g class="t">
+    <!-- People -->
+    <rect class="box" x="40" y="120" width="190" height="96" rx="12"/>
+    <text class="h" x="60" y="155">HR, managers,</text>
+    <text class="h" x="60" y="177">employees</text>
+    <text class="s" x="60" y="200">app.&lt;domain&gt;</text>
+
+    <rect class="box" x="40" y="250" width="190" height="80" rx="12"/>
+    <text class="h" x="60" y="285">Candidates</text>
+    <text class="s" x="60" y="308">emailed onboarding link</text>
+
+    <rect class="box" x="40" y="364" width="190" height="80" rx="12"/>
+    <text class="h" x="60" y="399">Anyone with a payslip</text>
+    <text class="s" x="60" y="422">QR verification page</text>
+
+    <rect class="box" x="40" y="478" width="190" height="96" rx="12"/>
+    <text class="h" x="60" y="513">Platform operators</text>
+    <text class="s" x="60" y="536">console.&lt;domain&gt;</text>
+    <text class="s" x="60" y="556">TOTP two-factor</text>
+
+    <!-- Edge -->
+    <rect class="aws" x="290" y="250" width="170" height="194" rx="12"/>
+    <text class="h" x="308" y="285">CloudFront</text>
+    <text class="s" x="308" y="306">+ WAF (optional)</text>
+    <line x1="308" y1="326" x2="442" y2="326" stroke="#33405a"/>
+    <text class="h" x="308" y="360">Load balancer</text>
+    <text class="s" x="308" y="381">TLS 1.2+, one HTTPS</text>
+    <text class="s" x="308" y="399">listener, host rules</text>
+    <text class="x" x="308" y="426">app. / api. / console.</text>
+
+    <path class="arrow" d="M230 168 C 262 168 262 300 290 300"/>
+    <path class="arrow" d="M230 290 L 290 320"/>
+    <path class="arrow" d="M230 404 L 290 380"/>
+    <path class="arrow" d="M230 526 C 262 526 262 410 290 410"/>
+
+    <!-- Private subnets -->
+    <rect class="zone" x="500" y="70" width="400" height="580" rx="16"/>
+    <text class="x" x="520" y="96">PRIVATE SUBNETS · ECS FARGATE · ARM64 · READ-ONLY ROOT FS</text>
+
+    <rect class="box" x="520" y="116" width="360" height="92" rx="12"/>
+    <text class="h" x="540" y="150">web</text>
+    <text class="s" x="540" y="173">Next.js tenant app, standalone server</text>
+    <text class="x" x="540" y="194">runtime config from /env.js, one image for every env</text>
+
+    <rect class="box" x="520" y="226" width="360" height="92" rx="12"/>
+    <text class="h" x="540" y="260">console</text>
+    <text class="s" x="540" y="283">Next.js operator console</text>
+    <text class="x" x="540" y="304">fleet, workspaces, impersonation, audit</text>
+
+    <rect class="hot" x="520" y="336" width="360" height="296" rx="12"/>
+    <text class="h" x="540" y="370">api</text>
+    <text class="s" x="540" y="392">Express, layered:</text>
+    <g class="m" font-size="12.5" fill="#9fd9cf">
+      <text x="556" y="420">routes → controllers</text>
+      <text x="556" y="442">      → services</text>
+      <text x="556" y="464">      → repositories</text>
+    </g>
+    <text class="x" x="540" y="494">/api            tenant plane, aud=tenant</text>
+    <text class="x" x="540" y="514">/api/platform   operator plane, own secret</text>
+    <line x1="540" y1="532" x2="860" y2="532" stroke="#2a3c39"/>
+    <text class="s" x="540" y="558">job worker in-process</text>
+    <text class="x" x="540" y="579">Postgres queue (SKIP LOCKED), leader-elected</text>
+    <text class="x" x="540" y="597">sweeps: reminders, escalation, access revocation</text>
+    <text class="x" x="540" y="617">migrations at boot under an advisory lock</text>
+
+    <path class="arrow" d="M460 300 C 490 300 490 162 520 162"/>
+    <path class="arrow" d="M460 340 C 490 340 490 272 520 272"/>
+    <path class="arrowhot" d="M460 380 C 490 380 490 470 520 470"/>
+
+    <!-- Data and AWS -->
+    <rect class="aws" x="960" y="96" width="280" height="96" rx="12"/>
+    <text class="h" x="980" y="130">RDS PostgreSQL 16</text>
+    <text class="s" x="980" y="152">private, encrypted, PITR</text>
+    <text class="x" x="980" y="174">password rotated, read per connection</text>
+
+    <rect class="aws" x="960" y="208" width="280" height="96" rx="12"/>
+    <text class="h" x="980" y="242">S3 documents</text>
+    <text class="s" x="980" y="264">SSE-KMS, versioned, TLS only</text>
+    <text class="x" x="980" y="286">streamed through the API, never public</text>
+
+    <rect class="aws" x="960" y="320" width="280" height="96" rx="12"/>
+    <text class="h" x="980" y="354">KMS</text>
+    <text class="s" x="980" y="376">wraps one data key per workspace</text>
+    <text class="x" x="980" y="398">context {orgId, purpose: pii}</text>
+
+    <rect class="aws" x="960" y="432" width="280" height="96" rx="12"/>
+    <text class="h" x="980" y="466">SES v2</text>
+    <text class="s" x="980" y="488">platform identity + one verified</text>
+    <text class="s" x="980" y="506">sending domain per workspace</text>
+
+    <rect class="aws" x="960" y="544" width="280" height="96" rx="12"/>
+    <text class="h" x="980" y="578">Secrets Manager</text>
+    <text class="s" x="980" y="600">tenant JWT, operator JWT,</text>
+    <text class="s" x="980" y="618">document-verification keys</text>
+
+    <path class="arrowhot" d="M880 420 C 920 420 920 144 960 144"/>
+    <path class="arrowhot" d="M880 440 C 925 440 925 256 960 256"/>
+    <path class="arrowhot" d="M880 460 C 930 460 930 368 960 368"/>
+    <path class="arrowhot" d="M880 480 C 930 480 930 480 960 480"/>
+    <path class="arrow" d="M880 500 C 920 500 920 592 960 592"/>
+
+    <text class="x" x="40" y="690">Locally, the same Terraform provisions S3, KMS, Secrets Manager, Route53 and SES on the Floci emulator; mail is relayed to Mailpit.</text>
+  </g>
+</svg>

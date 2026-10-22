@@ -1,0 +1,10 @@
+# Code owners are requested for review on every pull request touching their paths.
+#
+# Uncomment and set a real GitHub team (or users) to enable. GitHub reports an
+# error for teams that do not exist, so the rules ship commented out.
+#
+# *                                   @<org>/<maintainers-team>
+# /infra/                             @<org>/<maintainers-team>
+# /apps/api/src/security/             @<org>/<security-team>
+# /apps/api/src/repositories/base.repository.ts  @<org>/<security-team>
+# /apps/api/src/middleware/           @<org>/<security-team>

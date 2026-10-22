@@ -1,0 +1,87 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1280" height="560" viewBox="0 0 1280 560" role="img" aria-labelledby="t d">
+  <title id="t">Life of an API request</title>
+  <desc id="d">A request passes security middleware, authentication and workspace checks, then routes, controllers, services and repositories, which scope every query to the workspace and seal personal data.</desc>
+  <style>
+    .t { font-family: Inter, -apple-system, Segoe UI, Helvetica, Arial, sans-serif; }
+    .m { font-family: JetBrains Mono, SFMono-Regular, Menlo, monospace; }
+    .h { font-size: 16px; font-weight: 650; fill: #e9f2f0; }
+    .s { font-size: 12.5px; fill: #93a7a3; }
+    .k { font-size: 11px; fill: #2dd4bf; letter-spacing: 0.6px; }
+    .box { fill: #111c1a; stroke: #2a3c39; stroke-width: 1.2; }
+    .hot { fill: #10211e; stroke: #2dd4bf; stroke-opacity: 0.55; stroke-width: 1.4; }
+    .db { fill: #141a24; stroke: #33405a; stroke-width: 1.2; }
+    .arrow { stroke: #4b6662; stroke-width: 1.6; fill: none; marker-end: url(#a); }
+  </style>
+  <defs>
+    <marker id="a" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0 0L10 5L0 10z" fill="#4b6662"/></marker>
+    <pattern id="grid" width="32" height="32" patternUnits="userSpaceOnUse"><path d="M32 0H0V32" fill="none" stroke="#fff" stroke-opacity="0.03"/></pattern>
+  </defs>
+  <rect width="1280" height="560" rx="16" fill="#0a1110"/>
+  <rect width="1280" height="560" rx="16" fill="url(#grid)"/>
+  <g class="t">
+    <text class="k" x="40" y="52">MIDDLEWARE</text>
+    <rect class="box" x="40" y="66" width="270" height="160" rx="12"/>
+    <text class="h" x="60" y="98">Edge of the app</text>
+    <text class="s" x="60" y="124">helmet security headers</text>
+    <text class="s" x="60" y="144">CORS allowlist (403 otherwise)</text>
+    <text class="s" x="60" y="164">rate limits on credential routes</text>
+    <text class="s" x="60" y="184">request id, redacted access log</text>
+    <text class="s" x="60" y="204">5 MB JSON body limit</text>
+
+    <rect class="hot" x="340" y="66" width="300" height="160" rx="12"/>
+    <text class="h" x="360" y="98">authRequired</text>
+    <text class="s" x="360" y="124">verify JWT (aud=tenant)</text>
+    <text class="s" x="360" y="144">reload the user row: disabled? revoked?</text>
+    <text class="s" x="360" y="164">reload the workspace: suspended → 403</text>
+    <text class="s" x="360" y="184">resolve permissions + dept/office scope</text>
+    <text class="s" x="360" y="204">bind repositories to user.orgId</text>
+    <path class="arrow" d="M310 146 L 340 146"/>
+
+    <text class="k" x="40" y="282">LAYERS</text>
+    <rect class="box" x="40" y="296" width="230" height="120" rx="12"/>
+    <text class="h" x="60" y="328">route</text>
+    <text class="s" x="60" y="352">path + guards</text>
+    <text class="m" x="60" y="380" font-size="11.5" fill="#9fd9cf">staffOnly</text>
+    <text class="m" x="60" y="398" font-size="11.5" fill="#9fd9cf">requirePermission(...)</text>
+
+    <rect class="box" x="300" y="296" width="230" height="120" rx="12"/>
+    <text class="h" x="320" y="328">controller</text>
+    <text class="s" x="320" y="352">read params and body,</text>
+    <text class="s" x="320" y="370">call one service,</text>
+    <text class="s" x="320" y="388">write status and headers</text>
+
+    <rect class="box" x="560" y="296" width="250" height="120" rx="12"/>
+    <text class="h" x="580" y="328">service</text>
+    <text class="s" x="580" y="352">business rules, no Express</text>
+    <text class="s" x="580" y="370">ctx.can(), ctx.inScope()</text>
+    <text class="s" x="580" y="388">transactions, audit, mail</text>
+
+    <rect class="hot" x="840" y="296" width="250" height="120" rx="12"/>
+    <text class="h" x="860" y="328">repository</text>
+    <text class="s" x="860" y="352">the only database access</text>
+    <text class="s" x="860" y="370">WHERE org_id = ctx.orgId</text>
+    <text class="s" x="860" y="388">seal / open personal data</text>
+
+    <path class="arrow" d="M490 226 C 490 262 155 262 155 296"/>
+    <path class="arrow" d="M270 356 L 300 356"/>
+    <path class="arrow" d="M530 356 L 560 356"/>
+    <path class="arrow" d="M810 356 L 840 356"/>
+
+    <rect class="db" x="1120" y="296" width="130" height="120" rx="12"/>
+    <text class="h" x="1140" y="328">Postgres</text>
+    <text class="s" x="1140" y="352">hot columns</text>
+    <text class="s" x="1140" y="370">+ data jsonb</text>
+    <text class="s" x="1140" y="388">(sealed fields)</text>
+    <path class="arrow" d="M1090 356 L 1120 356"/>
+
+    <rect class="db" x="840" y="452" width="250" height="76" rx="12"/>
+    <text class="h" x="860" y="482">KMS</text>
+    <text class="s" x="860" y="504">unwraps the workspace data key once,</text>
+    <text class="s" x="860" y="520">cached in memory for 10 minutes</text>
+    <path class="arrow" d="M965 416 L 965 452"/>
+
+    <text class="s" x="40" y="482" fill="#6f8581">Every collection is registered as tenant-scoped or deliberately global; a unit test fails</text>
+    <text class="s" x="40" y="500" fill="#6f8581">if a table with org_id is not scoped, and the isolation sweep calls every parameterised</text>
+    <text class="s" x="40" y="518" fill="#6f8581">route as another workspace's admin, expecting nothing back and nothing changed.</text>
+  </g>
+</svg>

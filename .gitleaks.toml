@@ -1,0 +1,60 @@
+# gitleaks configuration: the default ruleset plus rules for cloud identifiers
+# that are not secrets on their own but must never appear in a public repo
+# (they map infrastructure and aid targeted attacks).
+title = "euron-open-hrms"
+
+[extend]
+useDefault = true
+
+[[rules]]
+id = "aws-account-id-in-arn"
+description = "AWS ARN carrying a real 12-digit account id"
+regex = '''arn:aws[a-z-]*:[a-z0-9-]+:[a-z0-9-]*:(\d{12}):'''
+secretGroup = 1
+keywords = ["arn:aws"]
+[rules.allowlist]
+regexes = ['''^000000000000$''', '''^123456789012$''']
+
+[[rules]]
+id = "aws-account-id-labelled"
+description = "12-digit number labelled as an AWS account"
+regex = '''(?i)(?:account[_ -]?id|aws[_ -]?account|account)["'\s:=]{1,6}(\d{12})\b'''
+secretGroup = 1
+keywords = ["account"]
+[rules.allowlist]
+# Placeholders, plus the fake bank account numbers the demo seed and tests use
+regexes = ['''^000000000000$''', '''^123456789012$''', '''^000123456789$''', '''^000111222333$''']
+
+[[rules]]
+id = "aws-resource-id"
+description = "Concrete AWS resource id (AMI, subnet, security group, VPC, ...)"
+regex = '''\b((?:ami|subnet|sg|vpc|pcx|rtb|igw|nat|eni|vol|snap|i)-[0-9a-f]{8,17})\b'''
+secretGroup = 1
+keywords = ["ami-", "subnet-", "sg-", "vpc-", "pcx-", "rtb-", "igw-", "nat-", "eni-", "vol-", "snap-", "i-"]
+[rules.allowlist]
+regexes = ['''-0{8,17}$''', '''-(?:x+|abc[0-9a-f]*|1234567[0-9a-f]*)$''']
+
+[[rules]]
+id = "rds-endpoint"
+description = "Concrete RDS endpoint hostname"
+regex = '''\b[a-z0-9-]+\.[a-z0-9]{12}\.[a-z0-9-]+\.rds\.amazonaws\.com\b'''
+keywords = ["rds.amazonaws.com"]
+
+[allowlist]
+description = "Documented emulator credentials and example placeholders"
+regexTarget = "match"
+regexes = [
+  '''AWS_(ACCESS_KEY_ID|SECRET_ACCESS_KEY)[=:]\s*["']?test["']?''',
+  '''(access|secret)_key\s*=\s*"test"''',
+  '''replace-with-output-of-make-env''',
+  # Test fixtures use visibly fake secrets
+  '''test-only-[A-Za-z0-9-]+''',
+  '''-----BEGIN PRIVATE KEY-----\\n\.\.\.\\n-----END PRIVATE KEY-----''',  # Letter template identifiers and the TOTP test vector are not secrets
+  '''key: "[A-Z_]+_LETTER_[0-9]+"''',
+  '''secret=ABCDEF234567''',
+]
+paths = [
+  '''pnpm-lock\.yaml''',
+  '''(^|/)node_modules/''',
+  '''\.example$''',
+]

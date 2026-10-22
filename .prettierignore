@@ -1,0 +1,9 @@
+node_modules
+dist
+.next
+coverage
+pnpm-lock.yaml
+.terraform
+*.tfstate*
+apps/api/src/db/types.ts
+playwright-report

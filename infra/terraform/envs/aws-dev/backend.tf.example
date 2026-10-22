@@ -1,0 +1,13 @@
+# Copy to backend.tf to keep state in S3 (recommended for anything shared).
+# State contains generated secrets: the bucket must be private, versioned and
+# encrypted, and access limited to the people who deploy.
+#
+# terraform {
+#   backend "s3" {
+#     bucket       = "<your-terraform-state-bucket>"
+#     key          = "euron-open-hrms/aws-dev.tfstate"
+#     region       = "<region>"
+#     encrypt      = true
+#     use_lockfile = true   # S3-native state locking (no DynamoDB table needed)
+#   }
+# }

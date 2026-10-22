@@ -1,0 +1,22 @@
+# Keep build contexts small and secret-free.
+**/node_modules
+**/dist
+**/.next
+**/.turbo
+**/coverage
+**/playwright-report
+**/test-results
+.git
+.github
+docs
+infra/terraform
+e2e
+.demo
+**/data
+**/.env
+**/.env.*
+!**/.env.example
+**/*.tfstate*
+**/.terraform
+*.log
+.DS_Store

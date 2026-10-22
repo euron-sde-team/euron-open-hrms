@@ -1,0 +1,92 @@
+@import "tailwindcss";
+@import "tw-animate-css";
+@import "@open-hrms/ui/styles.css";
+
+/* The shared primitives live outside this app, so tell Tailwind to scan them. */
+@source "../../../../packages/ui/src";
+
+/* ═══════════════════════════════════════════════════════════════════════════
+   Operator console palette.
+
+   Same Apple-calibrated geometry as the tenant app (44px controls, iOS type
+   ramp, continuous radii, standard spring easing, all from @open-hrms/ui) but
+   on a permanently dark "control plane" palette, so an operator can never
+   mistake this surface for a tenant workspace. Teal stays the accent.
+
+   Unlayered, so it wins over the shared tokens' light defaults.
+   ═══════════════════════════════════════════════════════════════════════════ */
+
+:root {
+  color-scheme: dark;
+
+  /* Operator "control plane": deep navy panels, bright teal accent. */
+  --background: #080d1a;
+  --foreground: #e8eefc;
+  --card: #101a30;
+  --card-foreground: #e8eefc;
+  --popover: #16223c;
+  --popover-foreground: #e8eefc;
+  --secondary: #16223c;
+  --secondary-foreground: #e8eefc;
+  --muted: #14203a;
+  --muted-foreground: #93a3c0;
+  --border: #23314f;
+  --input: #2b3b5e;
+
+  --primary: #2dd4bf;
+  --primary-foreground: #04231f;
+  --accent: #10333a;
+  --accent-foreground: #7ef0dd;
+  --ring: #2dd4bf;
+
+  --destructive: #ff5f6d;
+  --chart-1: #2dd4bf;
+  --chart-2: #5aa9ff;
+  --chart-3: #fbbf24;
+  --chart-4: #c084fc;
+  --chart-5: #93a3c0;
+
+  --sidebar: #101a30;
+  --sidebar-foreground: #e8eefc;
+  --sidebar-primary: #2dd4bf;
+  --sidebar-primary-foreground: #04231f;
+  --sidebar-accent: #10333a;
+  --sidebar-accent-foreground: #7ef0dd;
+  --sidebar-border: #23314f;
+  --sidebar-ring: #2dd4bf;
+
+  --ink-2: #c7d3ea;
+  --muted-2: #93a3c0;
+  --faint: #64748b;
+  --line: #23314f;
+  --line-2: #1a2742;
+  --hairline: rgba(120, 145, 190, 0.28);
+  --accent-50: #10333a;
+  --accent-100: #164a52;
+  --accent-700: #7ef0dd;
+  --coral: #ff5f6d;
+  --ok: #34d399;
+  --ok-bg: #0d2e26;
+  --warn: #fbbf24;
+  --warn-bg: #33280a;
+  --bad: #ff5f6d;
+  --bad-bg: #3a1219;
+  --info: #5aa9ff;
+  --info-bg: #0d2440;
+  --grey-bg: #1a2742;
+  --grey-fg: #93a3c0;
+
+  --elev-1: 0 1px 2px rgba(0, 0, 0, 0.45);
+  --elev-2: 0 2px 8px rgba(0, 0, 0, 0.5);
+  --elev-3: 0 8px 24px rgba(0, 0, 0, 0.55);
+  --elev-4: 0 16px 44px rgba(0, 0, 0, 0.6);
+  --elev-5: 0 30px 80px rgba(0, 0, 0, 0.68);
+
+  --material-thick: rgba(16, 26, 48, 0.9);
+  --material-regular: rgba(16, 26, 48, 0.76);
+  --material-thin: rgba(16, 26, 48, 0.6);
+  --material-blur: saturate(180%) blur(20px);
+}
+
+/* Nothing in the console toggles `.dark`: the palette above IS the console's
+   only theme, so there is no light/dark pair to keep in sync. */

@@ -1,0 +1,86 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1280" height="520" viewBox="0 0 1280 520" role="img" aria-labelledby="t d">
+  <title id="t">Per-workspace sending domains</title>
+  <desc id="d">A workspace adds its domain, publishes the DKIM and MAIL FROM records, and once SES verifies them its mail leaves from that domain; until then mail goes out from the platform address.</desc>
+  <style>
+    .t { font-family: Inter, -apple-system, Segoe UI, Helvetica, Arial, sans-serif; }
+    .m { font-family: JetBrains Mono, SFMono-Regular, Menlo, monospace; }
+    .h { font-size: 16px; font-weight: 650; fill: #e9f2f0; }
+    .s { font-size: 12.5px; fill: #93a7a3; }
+    .k { font-size: 11px; fill: #2dd4bf; letter-spacing: 0.6px; }
+    .box { fill: #111c1a; stroke: #2a3c39; stroke-width: 1.2; }
+    .hot { fill: #10211e; stroke: #2dd4bf; stroke-opacity: 0.55; stroke-width: 1.4; }
+    .aws { fill: #141a24; stroke: #33405a; stroke-width: 1.2; }
+    .arrow { stroke: #4b6662; stroke-width: 1.6; fill: none; marker-end: url(#a); }
+    .arrowhot { stroke: #2dd4bf; stroke-opacity: 0.8; stroke-width: 1.6; fill: none; marker-end: url(#ah); }
+  </style>
+  <defs>
+    <marker id="a" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0 0L10 5L0 10z" fill="#4b6662"/></marker>
+    <marker id="ah" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0 0L10 5L0 10z" fill="#2dd4bf"/></marker>
+    <pattern id="grid" width="32" height="32" patternUnits="userSpaceOnUse"><path d="M32 0H0V32" fill="none" stroke="#fff" stroke-opacity="0.03"/></pattern>
+  </defs>
+  <rect width="1280" height="520" rx="16" fill="#0a1110"/>
+  <rect width="1280" height="520" rx="16" fill="url(#grid)"/>
+  <g class="t">
+    <text class="k" x="40" y="52">ONE WORKSPACE'S SENDING DOMAIN</text>
+
+    <rect class="box" x="40" y="70" width="250" height="150" rx="12"/>
+    <text class="h" x="60" y="102">1. Add</text>
+    <text class="m" x="60" y="128" font-size="12" fill="#9fd9cf">mail.acme.example</text>
+    <text class="s" x="60" y="154">API creates the SES identity</text>
+    <text class="s" x="60" y="172">(Easy DKIM, MAIL FROM bounce.)</text>
+    <text class="s" x="60" y="196">refused if another workspace</text>
+    <text class="s" x="60" y="212">or the platform already uses it</text>
+
+    <rect class="box" x="330" y="70" width="270" height="150" rx="12"/>
+    <text class="h" x="350" y="102">2. Publish DNS</text>
+    <text class="s" x="350" y="128">3 DKIM CNAMEs</text>
+    <text class="s" x="350" y="146">MX + SPF for the MAIL FROM host</text>
+    <text class="s" x="350" y="164">SPF and DMARC suggestions</text>
+    <text class="s" x="350" y="196">the workspace admin copies them</text>
+    <text class="s" x="350" y="212">into their DNS provider</text>
+
+    <rect class="hot" x="640" y="70" width="270" height="150" rx="12"/>
+    <text class="h" x="660" y="102">3. Check → VERIFIED</text>
+    <text class="s" x="660" y="128">SES reads DKIM and MAIL FROM</text>
+    <text class="s" x="660" y="146">status (asynchronous)</text>
+    <text class="s" x="660" y="170">sender adopted on verify:</text>
+    <text class="m" x="660" y="194" font-size="12" fill="#9fd9cf">hr@mail.acme.example</text>
+
+    <rect class="box" x="950" y="70" width="290" height="150" rx="12"/>
+    <text class="h" x="970" y="102">4. Remove (any time)</text>
+    <text class="s" x="970" y="128">deletes the SES identity</text>
+    <text class="s" x="970" y="146">and reverts to the platform</text>
+    <text class="s" x="970" y="164">sender immediately</text>
+    <text class="s" x="970" y="196">region drift is detected and</text>
+    <text class="s" x="970" y="212">fixed by re-provisioning</text>
+
+    <path class="arrow" d="M290 145 L 330 145"/>
+    <path class="arrow" d="M600 145 L 640 145"/>
+    <path class="arrow" d="M910 145 L 950 145"/>
+
+    <text class="k" x="40" y="282">WHO EVERY EMAIL COMES FROM</text>
+    <rect class="box" x="40" y="300" width="360" height="120" rx="12"/>
+    <text class="h" x="60" y="332">Domain not verified (or none)</text>
+    <text class="m" x="60" y="358" font-size="12" fill="#9fd9cf">Acme HR &lt;no-reply@platform&gt;</text>
+    <text class="s" x="60" y="384">platform identity, the workspace's</text>
+    <text class="s" x="60" y="402">own sender name</text>
+
+    <rect class="hot" x="440" y="300" width="360" height="120" rx="12"/>
+    <text class="h" x="460" y="332">Domain verified</text>
+    <text class="m" x="460" y="358" font-size="12" fill="#9fd9cf">Acme HR &lt;hr@mail.acme.example&gt;</text>
+    <text class="s" x="460" y="384">invites, onboarding, payslips,</text>
+    <text class="s" x="460" y="402">reminders, letters</text>
+
+    <rect class="aws" x="840" y="300" width="400" height="120" rx="12"/>
+    <text class="h" x="860" y="332">SES v2</text>
+    <text class="s" x="860" y="356">configuration set: TLS required,</text>
+    <text class="s" x="860" y="374">bounces and complaints suppressed</text>
+    <text class="s" x="860" y="398">unverified senders are rejected by SES</text>
+
+    <path class="arrow" d="M400 360 L 440 360"/>
+    <path class="arrowhot" d="M800 360 L 840 360"/>
+
+    <text class="s" x="40" y="470" fill="#6f8581">Locally the emulator verifies an identity only once its DKIM records exist in its Route53, exactly like AWS, so the</text>
+    <text class="s" x="40" y="488" fill="#6f8581">whole lifecycle is covered by an integration test that publishes the records itself and reads the mail back from Mailpit.</text>
+  </g>
+</svg>
